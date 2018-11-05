@@ -1,0 +1,79 @@
+---
+title: "EDA apply() function"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Apply() 함수 사용
+
+- 사용목적
+  - 특정 데이터셋에 대해 Row or Column 단위로 필요한 함수를 일괄 적용
+
+```{r }
+#간단 데이터 생성
+m<-matrix(1:9,nrow=3)
+m
+
+#행렬데이터에 대한 Row & Column 방향 연산
+rowSums(m)
+colSums(m)
+```
+
+- **apply() 함수를 이용한 row&column 방향 연산**
+```{r}
+apply(m,1,sum)#row(1)방향으로 sum()함수 적용
+apply(m,2,sum)#column(2)방향으로 sum()함수 적용
+```
+- **학생 명부 데이터 프레임을 통한 예**
+```{r}
+student <- c("John Davis","Angela Williams","Bullwinkle Moose",
+             "David Jones","Janice Markhammer", "Cheryl Cushing",
+             "Reuven Ytzrhak", "Greg Knox","Joel England","Mary Rayburn")
+math <- c(502, 600, 412, 358, 495, 512, 410, 625, 573, 522)
+science <- c(95, 99, 80, 82, 75, 85, 80, 95, 89, 86)
+english <- c(25, 22, 18, 15, 20, 28, 15, 30, 27, 18)
+#data.frame 형태로 가공
+roster.df <- data.frame(student, math, science, english, 
+                        stringsAsFactors=FALSE)
+roster.df
+str(roster.df)
+roster<-roster.df
+#Apply()함수 적용
+apply(roster[2:4], 1, mean)
+apply(roster[2:4], 2, mean)
+#Scailing 안되서 보기 불편하다
+```
+
+
+- **After Scailing the roster data, get the mean scores**
+```{r}
+library(magrittr)
+roster$math100 <- round((roster$math * 100) / 700, 1)
+roster$eng100 <- ((roster$english * 100) / 30) %>% signif(1)
+#head(roster) 
+#스케일링된 데이터에 apply()함수 적용
+#개별학생들의 평균성적과 표준편차 도출
+roster$st.avg <- apply(roster[c(3, 5, 6)], 1, mean) %>% round(1) 
+roster$st.sd <- apply(roster[c(3, 5, 6)], 1, sd) %>% round(1)
+#roster
+roster[-c(2, 4)]
+
+#정렬기능(arrange) 사용을 위한 패키지 로딩
+library(dplyr)
+arrange(roster, desc(st.avg), desc(st.sd))
+roster %>% arrange(desc(st.avg), desc(st.sd))
+```
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
