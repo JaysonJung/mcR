@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Apply() 함수 사용
+##Apply() 함수 사용
 
 - 사용목적
   - 특정 데이터셋에 대해 Row or Column 단위로 필요한 함수를 일괄 적용
@@ -22,12 +22,12 @@ rowSums(m)
 colSums(m)
 ```
 
-- **apply() 함수를 이용한 row&column 방향 연산**
+-**apply() 함수를 이용한 row&column 방향 연산**
 ```{r}
 apply(m,1,sum)#row(1)방향으로 sum()함수 적용
 apply(m,2,sum)#column(2)방향으로 sum()함수 적용
 ```
-- **학생 명부 데이터 프레임을 통한 예**
+-**학생 명부 데이터 프레임을 통한 예**
 ```{r}
 student <- c("John Davis","Angela Williams","Bullwinkle Moose",
              "David Jones","Janice Markhammer", "Cheryl Cushing",
@@ -48,7 +48,7 @@ apply(roster[2:4], 2, mean)
 ```
 
 
-- **After Scailing the roster data, get the mean scores**
+-**After Scailing the roster data, get the mean scores**
 ```{r}
 library(magrittr)
 roster$math100 <- round((roster$math * 100) / 700, 1)
@@ -68,12 +68,3 @@ roster %>% arrange(desc(st.avg), desc(st.sd))
 ```
 
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
